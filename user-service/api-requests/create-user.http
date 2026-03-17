@@ -1,0 +1,10 @@
+### POST request to example server
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "firstName": "Olamide",
+    "lastName": "Olojede",
+    "password": "chris"
+}
