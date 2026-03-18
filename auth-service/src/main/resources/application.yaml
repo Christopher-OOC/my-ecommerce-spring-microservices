@@ -1,3 +1,6 @@
 service:
   user:
-    url: http://localhsot:8081
+    url: http://localhost:8081
+app:
+  internal:
+    key: wertyuioGHGFDFoiuyfgHJKJLKuiyufdGFHJk

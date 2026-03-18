@@ -13,4 +13,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body("invalid input");
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleGeneralException(Exception ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+
+
 }

@@ -14,11 +14,15 @@ public class RestClientConfig {
     @Value("${service.user.url}")
     private String baseUrl;
 
+    @Value("${app.internal.key}")
+    private  String internalKey;
+
     @Bean
     public UserServiceClient userServiceClient() {
         RestClient restClient = RestClient
                 .builder()
                 .baseUrl(baseUrl)
+                .defaultHeader("Internal-Api-Key",  internalKey)
                 .build();
 
         RestClientAdapter restClientAdapter = RestClientAdapter.create(restClient);
