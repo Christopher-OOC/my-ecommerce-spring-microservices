@@ -33,7 +33,6 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(decoded);
     }
 
-
     public AuthResponse generateLoginToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

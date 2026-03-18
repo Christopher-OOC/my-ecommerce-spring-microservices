@@ -8,6 +8,7 @@ import com.javalord.user_service.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,14 +18,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${app.internal.key}")
     private  String internalKey;
 
     public void createUser(UserCreateRequest request) {
         User user = userMapper.createRequestToUser(request);
-
-        // todo // encrypt password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
     }
