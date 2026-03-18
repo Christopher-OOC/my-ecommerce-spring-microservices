@@ -1,0 +1,3 @@
+service:
+  user:
+    url: http://localhsot:8081
