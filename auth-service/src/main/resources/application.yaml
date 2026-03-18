@@ -4,3 +4,8 @@ service:
 app:
   internal:
     key: wertyuioGHGFDFoiuyfgHJKJLKuiyufdGFHJk
+  security:
+    jwt:
+      secret-key: hhsghsdghggDFGHhjhbBHHbjbhbgfGHJghhjFGHhbjiOklujHJLhlgyLGukdftjresdSytlKGYuhlhgvUkghbVGgvkGVmhgvHKMgvjghVUBhbjbmhgvhGVcjgfgcvgf
+      access-token-expiration: 12345678
+      refresh-token-expiration: 123456789

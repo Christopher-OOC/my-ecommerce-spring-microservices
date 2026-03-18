@@ -1,6 +1,7 @@
 package com.javalord.auth_service.security;
 
 import com.javalord.auth_service.dto.AuthResponse;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -52,12 +53,17 @@ public class JwtService {
         );
     }
 
-    public AuthResponse refreshAccessToken() {
+    public AuthResponse refreshAccessToken(String token) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("Invalid username/password supplied");
         }
+
+        if (!checkIfRefreshTokenValid(token)) {
+            throw new JwtException("Invalid refresh token");
+        }
+
         String username = (String)authentication.getPrincipal();
 
         String accessToken = generateAccessToken(username, Map.of("TOKEN_TYPE", "ACCESS_TOKEN"), accessTokenExpiration);
@@ -68,6 +74,24 @@ public class JwtService {
                 refreshToken,
                 "Bearer"
         );
+    }
+
+    private boolean checkIfRefreshTokenValid(String token) {
+        String tokenType = (String)extractClaims(token).get("TOKEN_TYPE");
+        return tokenType.equals("REFRESH_TOKEN");
+    }
+
+    private Claims extractClaims(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(this.secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        }
+        catch (JwtException e) {
+            throw new JwtException("Invalid refresh token");
+        }
     }
 
     private String generateAccessToken(String email, Map<String, Object> claims, long expiration) {

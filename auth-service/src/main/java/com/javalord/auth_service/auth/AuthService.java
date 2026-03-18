@@ -3,6 +3,7 @@ package com.javalord.auth_service.auth;
 import com.javalord.auth_service.dto.AuthResponse;
 import com.javalord.auth_service.dto.LoginRequest;
 
+import com.javalord.auth_service.dto.RefreshTokenRequest;
 import com.javalord.auth_service.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,5 +26,9 @@ public class AuthService {
         );
 
         return jwtService.generateLoginToken();
+    }
+
+    public AuthResponse refreshToken(RefreshTokenRequest request) {
+        return jwtService.refreshAccessToken(request.getRefreshToken());
     }
 }
