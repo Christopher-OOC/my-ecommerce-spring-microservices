@@ -24,8 +24,6 @@ public class AuthService {
                 )
         );
 
-//        return jwtService.generateLoginToken();
-
-        return null;
+        return jwtService.generateLoginToken();
     }
 }
