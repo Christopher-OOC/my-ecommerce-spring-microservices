@@ -16,9 +16,12 @@ public class RouteConfig {
     public RouterFunction<ServerResponse> gatewayRoutes() {
         return GatewayRouterFunctions
                 .route("gateway-route")
-                .route(GatewayRequestPredicates.path("/api/v1/gateway/**"), HandlerFunctions.http())
+                .route(GatewayRequestPredicates.path("/gateway/**"), HandlerFunctions.http())
                 .before(BeforeFilterFunctions.uri("http://localhost:8084"))
+                .before(BeforeFilterFunctions.rewritePath("/gateway/(?<segment>.*)", "/api/v1/gateway/${segment}"))
                 .build();
     }
+
+
 
 }
