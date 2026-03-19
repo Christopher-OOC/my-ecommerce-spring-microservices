@@ -1,3 +1,9 @@
 spring:
   application:
     name: api-gateway
+app:
+  internal:
+    key: wertyuioGHGFDFoiuyfgHJKJLKuiyufdGFHJk
+  security:
+    jwt:
+      secret-key: hhsghsdghggDFGHhjhbBHHbjbhbgfGHJghhjFGHhbjiOklujHJLhlgyLGukdftjresdSytlKGYuhlhgvUkghbVGgvkGVmhgvHKMgvjghVUBhbjbmhgvhGVcjgfgcvgf
