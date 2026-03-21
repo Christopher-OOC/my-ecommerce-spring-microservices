@@ -1,0 +1,7 @@
+### GET request to example server
+POST http://localhost:8080/api/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJUT0tFTl9UWVBFIjoiUkVGUkVTSF9UT0tFTiIsInN1YiI6ImFub255bW91c1VzZXIiLCJpYXQiOjE3NzM4NTIzMjcsImV4cCI6MTc3Mzk3NTc4NH0.BKFoPMP65f78nG4Q0xQlttRloOYxImy8vw5WkMjS2ixkHY21ZV_kzgIT9bji0WaPbmep0BbHwlgGDlST2MZrMw"
+}

@@ -13,15 +13,30 @@ import org.springframework.web.servlet.function.ServerResponse;
 public class RouteConfig {
 
     @Bean
-    public RouterFunction<ServerResponse> gatewayRoutes() {
+    public RouterFunction<ServerResponse> authServiceRoutes() {
         return GatewayRouterFunctions
-                .route("gateway-route")
-                .route(GatewayRequestPredicates.path("/gateway/**"), HandlerFunctions.http())
-                .before(BeforeFilterFunctions.uri("http://localhost:8084"))
-                .before(BeforeFilterFunctions.rewritePath("/gateway/(?<segment>.*)", "/api/v1/gateway/${segment}"))
+                .route("auth-service-route")
+                .route(GatewayRequestPredicates.path("/api/v1/auth/**"), HandlerFunctions.http())
+                .before(BeforeFilterFunctions.uri("http://localhost:8083"))
                 .build();
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> userServiceRoutes() {
+        return GatewayRouterFunctions
+                .route("user-service-route")
+                .route(GatewayRequestPredicates.path("/api/v1/users/**"), HandlerFunctions.http())
+                .before(BeforeFilterFunctions.uri("http://localhost:8081"))
+                .build();
+    }
 
+    @Bean
+    public RouterFunction<ServerResponse> productServiceRoutes() {
+        return GatewayRouterFunctions
+                .route("product-service-route")
+                .route(GatewayRequestPredicates.path("/api/v1/products/**"), HandlerFunctions.http())
+                .before(BeforeFilterFunctions.uri("http://localhost:8082"))
+                .build();
+    }
 
 }

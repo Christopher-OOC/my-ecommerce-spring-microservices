@@ -9,3 +9,8 @@ app:
       secret-key: hhsghsdghggDFGHhjhbBHHbjbhbgfGHJghhjFGHhbjiOklujHJLhlgyLGukdftjresdSytlKGYuhlhgvUkghbVGgvkGVmhgvHKMgvjghVUBhbjbmhgvhGVcjgfgcvgf
       access-token-expiration: 12345678
       refresh-token-expiration: 123456789
+server:
+  port: 8083
+spring:
+  main:
+    allow-circular-references: true

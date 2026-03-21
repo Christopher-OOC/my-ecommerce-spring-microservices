@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+@Slf4j
 @Service
 public class JwtUtil {
 
@@ -23,7 +25,10 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token) {
         try {
-            return extractClaims(token).getExpiration().before(new Date());
+            log.info("Created At: {}", extractClaims(token).getIssuedAt().toString());
+            log.info("Expiration At: {}", extractClaims(token).getExpiration().toString());
+
+            return extractClaims(token).getExpiration().after(new Date());
         }
         catch (JwtException ex) {
             throw new JwtException(ex.getMessage());

@@ -1,0 +1,17 @@
+### GET login to example server
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "chris"
+}
+
+> {% {client.global.set("token", response.body.accessToken)} %}
+
+### GET login to example server
+GET http://localhost:8080/test
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FOT05ZTU9VUyJdLCJUT0tFTl9UWVBFIjoiQUNDRVNTX1RPS0VOIiwic3ViIjoiYW5vbnltb3VzVXNlciIsImlhdCI6MTc3NDAwMTQ3NywiZXhwIjoxNzg4ODE2MjkxfQ.ZqBMRFsalc0S7Sx0_h-LGMiCIYcgSzrJcl6ToFTe6x6o9Gl8mZg4tVk2vscvkZlgZOV0Hx2U20KaVSl3uZuIDQ
+
+
+

@@ -9,3 +9,6 @@ server:
 app:
   internal:
     key: wertyuioGHGFDFoiuyfgHJKJLKuiyufdGFHJk
+  security:
+    jwt:
+      secret-key: hhsghsdghggDFGHhjhbBHHbjbhbgfGHJghhjFGHhbjiOklujHJLhlgyLGukdftjresdSytlKGYuhlhgvUkghbVGgvkGVmhgvHKMgvjghVUBhbjbmhgvhGVcjgfgcvgf

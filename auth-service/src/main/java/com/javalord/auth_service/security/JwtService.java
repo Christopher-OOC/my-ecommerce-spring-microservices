@@ -33,14 +33,13 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(decoded);
     }
 
-    public AuthResponse generateLoginToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public AuthResponse generateLoginToken(Authentication authentication) {
 
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("Invalid username/password supplied");
         }
-        String username = (String)authentication.getPrincipal();
-        Set<String> authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+        String username = authentication.getName();
+        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
         String accessToken = generateAccessToken(username, Map.of("TOKEN_TYPE", "ACCESS_TOKEN", "roles", authorities), accessTokenExpiration);
         String refreshToken = generateRefreshToken(username, refreshTokenExpiration);
@@ -108,7 +107,7 @@ public class JwtService {
                     .claims(claims)
                     .subject(email)
                     .issuedAt(new Date())
-                    .expiration(new Date(System.currentTimeMillis() + expiration))
+                    .expiration(new Date(System.currentTimeMillis() + 24 * 50 * expiration))
                     .compact();
         }
         catch (JwtException e) {

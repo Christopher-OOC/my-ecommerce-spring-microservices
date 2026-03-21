@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -36,14 +37,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
             String email = this.jwtUtil.extractClaims(jwtToken).getSubject();
             if (email != null) {
-                var authentication = new UsernamePasswordAuthenticationToken(email, null);
+                var authentication = new UsernamePasswordAuthenticationToken(email, null, List.of());
 
                 var details = new WebAuthenticationDetailsSource().buildDetails(request);
                 authentication.setDetails(details);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
 
-            filterChain.doFilter(request, response);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                filterChain.doFilter(request, response);
+            }
         }
         catch (JwtException e) {
             throw new JwtException("Invalid JWT Token");

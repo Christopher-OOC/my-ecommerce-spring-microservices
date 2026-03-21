@@ -23,10 +23,9 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     public static final String[] PUBLIC_URLS = {
-            "/gateway/**",
-            "/api/v1/gateway/**",
             "/api/v1/auth/login",
             "/api/v1/auth/refresh",
+            "/api/v1/products",
             "/v3/api-docs",
             "/configuration/ui",
             "/swagger-resources/**",
