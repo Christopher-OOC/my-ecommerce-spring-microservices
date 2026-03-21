@@ -11,6 +11,3 @@ app:
       refresh-token-expiration: 123456789
 server:
   port: 8083
-spring:
-  main:
-    allow-circular-references: true

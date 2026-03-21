@@ -1,3 +1,14 @@
 spring:
   application:
     name: cart-service
+service:
+  product:
+    url: http://localhost:8082
+  user:
+    url: http://localhost:8081
+app:
+  internal:
+    key: wertyuioGHGFDFoiuyfgHJKJLKuiyufdGFHJk
+  security:
+    jwt:
+      secret-key: hhsghsdghggDFGHhjhbBHHbjbhbgfGHJghhjFGHhbjiOklujHJLhlgyLGukdftjresdSytlKGYuhlhgvUkghbVGgvkGVmhgvHKMgvjghVUBhbjbmhgvhGVcjgfgcvgf
