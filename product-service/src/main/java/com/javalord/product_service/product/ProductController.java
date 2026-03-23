@@ -1,8 +1,8 @@
 package com.javalord.product_service.product;
 
 import com.javalord.product_service.dto.CreateProductRequest;
-import com.javalord.product_service.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
+import org.javalord.common.ProductResponse;
 import org.javalord.common.RestResponse;
 import org.javalord.common.Status;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{productId}")
-    public RestResponse<ProductResponse> getProduct(@PathVariable long productId) {
+    public ProductResponse getProduct(@PathVariable long productId) {
         ProductResponse product = productService.getProduct(productId);
 
         RestResponse<ProductResponse> response = new RestResponse<>(
@@ -52,7 +52,7 @@ public class ProductController {
                 product
         );
 
-        return response;
+        return product;
     }
 
 

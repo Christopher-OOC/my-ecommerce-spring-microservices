@@ -1,7 +1,7 @@
 package com.javalord.product_service.product;
 
 import com.javalord.product_service.dto.CreateProductRequest;
-import com.javalord.product_service.dto.ProductResponse;
+import org.javalord.common.ProductResponse;
 import org.springframework.stereotype.Service;
 
 @Service

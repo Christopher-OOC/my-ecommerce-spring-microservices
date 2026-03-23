@@ -6,7 +6,7 @@ import org.springframework.web.service.annotation.GetExchange;
 
 public interface ProductRestClientService {
 
-    @GetExchange(value = "/{productId}")
+    @GetExchange(value = "/api/v1/products/{productId}")
     ProductResponse getProduct(@PathVariable Long productId);
 
 }

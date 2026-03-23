@@ -1,7 +1,7 @@
 ### POST request to create product
-POST http://localhost:8080/api/v1/products
+POST http://localhost:8082/api/v1/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FOT05ZTU9VUyJdLCJUT0tFTl9UWVBFIjoiQUNDRVNTX1RPS0VOIiwic3ViIjoiYW5vbnltb3VzVXNlciIsImlhdCI6MTc3NDAwMTQ3NywiZXhwIjoxNzg4ODE2MjkxfQ.ZqBMRFsalc0S7Sx0_h-LGMiCIYcgSzrJcl6ToFTe6x6o9Gl8mZg4tVk2vscvkZlgZOV0Hx2U20KaVSl3uZuIDQ
+Authorization: Bearer {{token}}
 
 {
   "name": "Item 1",

@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.javalord.common.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,10 +39,19 @@ public class JwtService {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("Invalid username/password supplied");
         }
-        String username = authentication.getName();
-        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
-        String accessToken = generateAccessToken(username, Map.of("TOKEN_TYPE", "ACCESS_TOKEN", "roles", authorities), accessTokenExpiration);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        long userId = userDetails.getUserId();
+        String username = userDetails.getUsername();
+        String authorities = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+
+        Map<String, Object> claims = Map.of(
+                "TOKEN_TYPE", "ACCESS_TOKEN",
+                "roles", authorities,
+                "userId", userId
+        );
+
+        String accessToken = generateAccessToken(username, claims, accessTokenExpiration);
         String refreshToken = generateRefreshToken(username, refreshTokenExpiration);
 
         return new AuthResponse(

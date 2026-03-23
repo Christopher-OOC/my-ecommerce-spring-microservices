@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.javalord.common.CustomUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,6 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 throw new JwtException("Invalid JWT Token");
             }
 
+            long userId = this.jwtUtil.extractClaims(jwtToken).get("userId", Long.class);
             String email = this.jwtUtil.extractClaims(jwtToken).getSubject();
             String jwtRoles = this.jwtUtil.extractClaims(jwtToken).get("roles", String.class);
             String[] authorities = jwtRoles.split(",");
@@ -50,14 +52,19 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             if (email != null) {
-                var authentication = new UsernamePasswordAuthenticationToken(email, null, grantedAuthorities);
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        new CustomUserDetails(userId, email, null, grantedAuthorities, jwtToken),
+                        null,
+                        grantedAuthorities
+                );
 
                 var details = new WebAuthenticationDetailsSource().buildDetails(request);
                 authentication.setDetails(details);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                filterChain.doFilter(request, response);
             }
+
+            filterChain.doFilter(request, response);
         }
         catch (JwtException e) {
             throw new JwtException("Invalid JWT Token");

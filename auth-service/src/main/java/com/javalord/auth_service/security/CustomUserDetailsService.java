@@ -6,13 +6,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.javalord.auth_service.client.UserServiceClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.javalord.common.CustomUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(email);
         }
 
+        Long userId = jsonNode.get("data").get("userId").asLong();
         String username = jsonNode.get("data").get("email").asText();
         String password = jsonNode.get("data").get("password").asText();
         List<GrantedAuthority>  authorities = new ArrayList<>();
@@ -50,7 +50,8 @@ public class CustomUserDetailsService implements UserDetailsService {
            authorities.add(new SimpleGrantedAuthority(role.asText()));
         });
 
-        return new User(
+        return new CustomUserDetails(
+                userId,
                 username,
                 password,
                 authorities

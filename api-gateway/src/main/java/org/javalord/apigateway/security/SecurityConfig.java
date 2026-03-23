@@ -25,7 +25,6 @@ public class SecurityConfig {
     public static final String[] PUBLIC_URLS = {
             "/api/v1/auth/login",
             "/api/v1/auth/refresh",
-            "/api/v1/products",
             "/v3/api-docs",
             "/configuration/ui",
             "/swagger-resources/**",

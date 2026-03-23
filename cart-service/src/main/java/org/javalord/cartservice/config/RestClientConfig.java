@@ -23,6 +23,7 @@ public class RestClientConfig {
         RestClient restClient = RestClient
                 .builder()
                 .baseUrl(productServiceUrl)
+                .requestInterceptor(new AuthInterceptor())
                 .build();
 
         RestClientAdapter restClientAdapter = RestClientAdapter.create(restClient);
@@ -36,6 +37,7 @@ public class RestClientConfig {
         RestClient restClient = RestClient
                 .builder()
                 .baseUrl(userServiceUrl)
+                .requestInterceptor(new AuthInterceptor())
                 .build();
 
         RestClientAdapter restClientAdapter = RestClientAdapter.create(restClient);

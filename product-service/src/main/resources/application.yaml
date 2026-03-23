@@ -1,2 +1,8 @@
 server:
   port: 8082
+app:
+  internal:
+    key: wertyuioGHGFDFoiuyfgHJKJLKuiyufdGFHJk
+  security:
+    jwt:
+      secret-key: hhsghsdghggDFGHhjhbBHHbjbhbgfGHJghhjFGHhbjiOklujHJLhlgyLGukdftjresdSytlKGYuhlhgvUkghbVGgvkGVmhgvHKMgvjghVUBhbjbmhgvhGVcjgfgcvgf

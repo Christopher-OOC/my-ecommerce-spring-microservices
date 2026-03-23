@@ -6,7 +6,7 @@ import org.springframework.web.service.annotation.GetExchange;
 
 public interface UserRestClientService {
 
-    @GetExchange(value = "/{userId}")
+    @GetExchange(value = "/api/v1/users/{userId}")
     UserResponse getUser(@PathVariable Long userId);
 
 }

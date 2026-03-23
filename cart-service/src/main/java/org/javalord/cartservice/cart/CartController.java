@@ -1,7 +1,8 @@
 package org.javalord.cartservice.cart;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.javalord.cartservice.cart.dto.AddToCartRequest;
+import org.javalord.cartservice.cart.dto.CartAddRequest;
 import org.javalord.common.RestResponse;
 import org.javalord.common.Status;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,11 @@ public class CartController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public RestResponse<String> addToCart(@RequestBody AddToCartRequest request) {
+//    @PreAuthorize("isAuthenticated()")
+    public RestResponse<String> addToCart(@RequestBody CartAddRequest request, HttpServletRequest httpRequest) {
+
+//        httpRequest.getHeader("Authorization");
+
         cartService.addToCart(request);
 
         RestResponse<String> response = new RestResponse<>(

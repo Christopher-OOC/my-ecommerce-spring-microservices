@@ -31,6 +31,7 @@ public class UserMapper {
 
     public UserAuthResponse mapUserToAuthResponse(User user) {
         UserAuthResponse userAuthResponse = new UserAuthResponse();
+        userAuthResponse.setUserId(user.getId());
         userAuthResponse.setEmail(user.getEmail());
         userAuthResponse.setPassword(user.getPassword());
 //        userAuthResponse.setRoles(user.getRoles());

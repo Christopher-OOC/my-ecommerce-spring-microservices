@@ -1,10 +1,10 @@
 package com.javalord.product_service.product;
 
 import com.javalord.product_service.dto.CreateProductRequest;
-import com.javalord.product_service.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.javalord.common.BusinessException;
+import org.javalord.common.ProductResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,14 +1,12 @@
 package org.javalord.cartservice.cart;
 
-
 import lombok.RequiredArgsConstructor;
-import org.javalord.cartservice.cart.dto.AddToCartRequest;
+import org.javalord.cartservice.cart.dto.CartAddRequest;
 import org.javalord.cartservice.cart.dto.CartItemRequest;
 import org.javalord.cartservice.client.ProductRestClientService;
-import org.javalord.cartservice.client.UserRestClientService;
+import org.javalord.cartservice.util.AuthUtil;
 import org.javalord.common.BusinessException;
 import org.javalord.common.ProductResponse;
-import org.javalord.common.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,58 +15,62 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartService {
 
+    private final AuthUtil authUtil;
     private final CartRepository cartRepository;
     private final ProductRestClientService productRestClientService;
-    private final UserRestClientService userRestClientService;
     private final CartItemRepository cartItemRepository;
 
-    public void addToCart(AddToCartRequest request) {
-        UserResponse user;
+    public void addToCart(CartAddRequest request) {
+        long userId = authUtil.getCurrentUserId();
+        Cart cart = getOrCreateCart(userId);
+
+        for (CartItemRequest item : request.getCartItems()) {
+            processCartItem(cart, item);
+        }
+    }
+
+    private void processCartItem(Cart cart, CartItemRequest item) {
+        ProductResponse productResponse = getProduct(item.getProductId());
+        checkForEnoughQuantity(productResponse.getQuantity(), item.getQuantity());
+
+        Optional<CartItem> checkCartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), item.getProductId());
+
+        if (checkCartItem.isPresent()) {
+            CartItem cartItem = checkCartItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + item.getQuantity());
+            cartItemRepository.save(cartItem);
+        }
+        else {
+            CartItem newCartItem = CartItem
+                    .builder()
+                    .quantity(item.getQuantity())
+                    .productId(productResponse.getId())
+                    .cart(cart)
+                    .build();
+            cartItemRepository.save(newCartItem);
+        }
+    }
+
+    private void checkForEnoughQuantity(int productQuantity, int requestedQuantity) {
+        if (productQuantity < requestedQuantity) {
+            throw new BusinessException("Request quantity is greater than item quantity");
+        }
+    }
+
+    private ProductResponse getProduct(Long productId) {
         try {
-            user = userRestClientService.getUser(request.getUserId());
+            return productRestClientService.getProduct(productId);
         }
         catch (Exception e) {
-            if (e.getLocalizedMessage().contains("USER")) {
-                throw new BusinessException(e.getLocalizedMessage());
-            }
-
-            throw new BusinessException("Error adding to cart");
+            throw new BusinessException(e.getLocalizedMessage());
         }
 
-        Cart cart = cartRepository.findByUserId(user.getId())
+    }
+
+    private Cart getOrCreateCart(long userId) {
+        return cartRepository.findByUserId(userId)
                 .orElseGet(() -> cartRepository.save(
-                        Cart.builder().userId(user.getId()).build()
+                        Cart.builder().userId(userId).build()
                 ));
-
-        for (CartItemRequest item : request.getItems()) {
-            try {
-                ProductResponse product = productRestClientService.getProduct(item.getProductId());
-
-                if (product.getQuantity() < item.getQuantity()) {
-                    throw new BusinessException("product stock is lower than item quantity");
-                }
-
-                Optional<CartItem> checkCartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), product.getId());
-                if (checkCartItem.isPresent()) {
-                    CartItem existing = checkCartItem.get();
-                    existing.setQuantity(checkCartItem.get().getQuantity() + item.getQuantity());
-                    cartItemRepository.save(existing);
-                }
-                else {
-                    CartItem newCartItem = CartItem
-                            .builder()
-                            .quantity(item.getQuantity())
-                            .productId(product.getId())
-                            .cart(cart)
-                            .build();
-                    cartItemRepository.save(newCartItem);
-                }
-
-
-            }
-            catch (Exception e) {
-                throw new BusinessException(e.getLocalizedMessage());
-            }
-        }
     }
 }

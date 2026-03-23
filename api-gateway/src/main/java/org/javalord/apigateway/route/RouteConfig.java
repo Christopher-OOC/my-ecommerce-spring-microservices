@@ -39,4 +39,13 @@ public class RouteConfig {
                 .build();
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> cartServiceRoutes() {
+        return GatewayRouterFunctions
+                .route("cart-service-route")
+                .route(GatewayRequestPredicates.path("/api/v1/carts/**"), HandlerFunctions.http())
+                .before(BeforeFilterFunctions.uri("http://localhost:8084"))
+                .build();
+    }
+
 }
